@@ -32,7 +32,7 @@ export class NgxVisibilityService implements OnDestroy {
     ) {
         const configCopy = {
             root: config.root || null,
-            rootMargin: config.rootMargin || '0',
+            rootMargin: config.rootMargin || '0px',
             threshold: [].concat(config.threshold || 0)
         };
         const observerInfo = this.getObserver(configCopy);
@@ -74,7 +74,6 @@ export class NgxVisibilityService implements OnDestroy {
             return filteredList[0];
         }
 
-        console.log('making new3', config);
         const observer = new IntersectionObserver(toggledEntries => {
             for (const entry of toggledEntries) {
                 const entryInfo = this.entryMap.get(entry.target);
