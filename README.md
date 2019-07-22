@@ -3,6 +3,11 @@
 Angular 8.x library to monitor when elements are visible in the DOM. When you have a huge list of components, this is more performant than other libraries because it keeps the number of observers to a minimum. It uses IntersectionObserver to do the work.
 
 
+## Demonstration
+
+There's a [live demo](https://codesandbox.io/s/github/fidian/ngx-visibility-demo/tree/master/) over at CodeSandbox.io.
+
+
 ## Installation
 
 Install like other Angular libraries. First run a command to download the module.
