@@ -1,0 +1,35 @@
+<div class="D(f) Fxd(c)">
+    <div class="D(f)">
+        Items in list:
+        <a
+            *ngFor="let thisCount of availableCounts"
+            class="Td(u) Bdc(black) Bdw(1px) Bds(s) P(3px)"
+            [ngClass]="{ 'Fw(b) C(white) Bgc(darkblue)': count === thisCount }"
+            (click)="setItems(thisCount)"
+            >{{ thisCount }}</a
+        >
+    </div>
+    <margin [(value)]="margin"></margin>
+</div>
+
+<div>
+    <p>
+        The even amount of red shows that the viewport root that's set with
+        ngxVisibilityAnchor is honored because that directive is used within the
+        same component as ngxVisibility.
+    </p>
+    <p>
+        Red rows are considered "not visible" due to the negative margin.
+    </p>
+</div>
+
+<div class="Fxg(1) Fxs(1) Ov(a)" ngxVisibilityAnchor>
+    <div
+        *ngFor="let item of items"
+        (ngxVisibility)="setVisibility(item, $event)"
+        [ngxVisibilityMargin]="margin"
+        [ngClass]="{ 'Bgc(red)': !item.visible }"
+    >
+        {{ item.value }} {{ item.visible }}
+    </div>
+</div>

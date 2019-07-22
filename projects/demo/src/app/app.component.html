@@ -1,0 +1,35 @@
+<div class="D(f) Bdbw(1px) Bdbs(s)">
+    <div
+        class="Bdrststart(15px) Bdrstend(15px) H(40px) D(f) Ai(c) Px(20px) Mend(4px)"
+        [ngClass]="{
+            'Bgc(darkblue) C(white)': demo === 1,
+            'Bgc(lightblue)': demo !== 1
+        }"
+        (click)="demo = 1"
+    >
+        Demo 1
+    </div>
+    <div
+        class="Bdrststart(15px) Bdrstend(15px) H(40px) D(f) Ai(c) Px(20px) Mend(4px)"
+        [ngClass]="{
+            'Bgc(darkblue) C(white)': demo === 2,
+            'Bgc(lightblue)': demo !== 2
+        }"
+        (click)="demo = 2"
+    >
+        Demo 2
+    </div>
+    <div
+        class="Bdrststart(15px) Bdrstend(15px) H(40px) D(f) Ai(c) Px(20px) Mend(4px)"
+        [ngClass]="{
+            'Bgc(darkblue) C(white)': demo === 3,
+            'Bgc(lightblue)': demo !== 3
+        }"
+        (click)="demo = 3"
+    >
+        Demo 3
+    </div>
+</div>
+<demo1 *ngIf="demo === 1" class="H(100%) W(100%) Ov(h) D(f) Fxd(c)"></demo1>
+<demo2 *ngIf="demo === 2" class="H(100%) W(100%) Ov(h) D(f) Fxd(c)"></demo2>
+<demo3 *ngIf="demo === 3" class="H(100%) W(100%) Ov(h) D(f) Fxd(c)"></demo3>

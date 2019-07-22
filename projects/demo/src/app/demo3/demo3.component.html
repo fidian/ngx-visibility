@@ -1,0 +1,48 @@
+<div class="D(f) Fxd(c)">
+    <margin [(value)]="margin"></margin>
+    <div>Threshold (from 0 to 1): <input type="text" [(ngModel)]="threshold" /></div>
+</div>
+
+<div>
+    <p>
+        The threshold is intentionally set high so you can see that images are
+        loaded as you scroll.
+    </p>
+</div>
+
+<div class="Fxg(1) Fxs(1) Ov(a)" ngxVisibilityAnchor>
+    <div *ngFor="let image of images; index as i">
+        <div *ngIf="i % 3 === 0" class="D(f) Ai(c)">
+            <img
+                src="/assets/{{ image }}"
+                ngxVisibilityLazyLoad
+                [ngxVisibilityThreshold]="threshold"
+                [ngxVisibilityMargin]="margin"
+                height="250"
+                width="250"
+            />
+            <div>Image with "src" attribute</div>
+        </div>
+        <div *ngIf="i % 3 === 1" class="D(f) Ai(c)">
+            <img
+                srcset="/assets/{{ image }} 1x"
+                ngxVisibilityLazyLoad
+                [ngxVisibilityThreshold]="threshold"
+                [ngxVisibilityMargin]="margin"
+                height="250"
+                width="250"
+            />
+            <div>Image with "srcset" attribute</div>
+        </div>
+        <div *ngIf="i % 3 === 2" class="D(f) Ai(c)">
+            <div
+                backgroundImage="url('/assets/{{ image }}')"
+                ngxVisibilityLazyLoad
+                [ngxVisibilityThreshold]="threshold"
+                [ngxVisibilityMargin]="margin"
+                class="H(250px) W(250px) Bgz(ct) Bgr(nr)"
+            ></div>
+            <div>Div with "backgroundImage"</div>
+        </div>
+    </div>
+</div>
