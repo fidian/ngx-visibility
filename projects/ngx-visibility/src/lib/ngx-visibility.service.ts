@@ -4,38 +4,44 @@ type EntryCallback = (isVisible: boolean) => void;
 
 interface EntryInfo {
     callback: EntryCallback;
+    observerInfo: ObserverInfo;
+}
+
+interface ObserverInfo {
     config: IntersectionObserverInit;
+    count: number;
     observer: IntersectionObserver;
 }
 
 @Injectable()
 export class NgxVisibilityService implements OnDestroy {
     private entryMap = new Map<Element, EntryInfo>();
-    private observerMap = new WeakMap<IntersectionObserverInit, IntersectionObserver>();
-    private observerEntryCount = new Map<IntersectionObserver, number>();
+    private observerInfoList: ObserverInfo[] = [];
 
     ngOnDestroy() {
         this.entryMap.forEach((entryInfo, element) => {
             this.unobserve(element);
         });
-        this.observerEntryCount.forEach((count, observer) => {
-            observer.disconnect();
-        });
         this.entryMap.clear();
-        this.observerEntryCount.clear();
-        this.observerMap = new WeakMap();
     }
 
-    observe(element: Element, callback: EntryCallback, config: IntersectionObserverInit = {}) {
-        const observer = this.getObserver(config);
+    observe(
+        element: Element,
+        callback: EntryCallback,
+        config: IntersectionObserverInit = {}
+    ) {
+        const configCopy = {
+            root: config.root || null,
+            rootMargin: config.rootMargin || '0',
+            threshold: [].concat(config.threshold || 0)
+        };
+        const observerInfo = this.getObserver(configCopy);
         this.entryMap.set(element, {
             callback,
-            config,
-            observer
+            observerInfo
         });
-        observer.observe(element);
-        const count = this.observerEntryCount.get(observer) || 0;
-        this.observerEntryCount.set(observer, count + 1);
+        observerInfo.observer.observe(element);
+        observerInfo.count += 1;
     }
 
     unobserve(element: Element) {
@@ -43,32 +49,49 @@ export class NgxVisibilityService implements OnDestroy {
 
         if (entryInfo) {
             this.entryMap.delete(element);
-            const count = this.observerEntryCount.get(entryInfo.observer) || 0;
+            entryInfo.observerInfo.count -= 1;
 
-            if (count <= 1) {
-                this.observerEntryCount.delete(entryInfo.observer);
-                this.observerMap.delete(entryInfo.config);
-            } else {
-                this.observerEntryCount.set(entryInfo.observer, count - 1);
+            if (entryInfo.observerInfo.count === 0) {
+                entryInfo.observerInfo.observer.disconnect();
+                this.observerInfoList = this.observerInfoList.filter(
+                    oi => oi.observer !== entryInfo.observerInfo.observer
+                );
             }
         }
     }
 
     private getObserver(config: IntersectionObserverInit) {
-        let observer = this.observerMap.get(config);
+        const configThresholdString = [].concat(config.threshold).join(' ');
+        const filteredList = this.observerInfoList.filter(
+            oi =>
+                oi.config.root === config.root &&
+                oi.config.rootMargin === config.rootMargin &&
+                [].concat(oi.config.threshold).join(' ') ===
+                    configThresholdString
+        );
 
-        if (!observer) {
-            observer = new IntersectionObserver(toggledEntries => {
-                for (const entry of toggledEntries) {
-                    const entryInfo = this.entryMap.get(entry.target);
-
-                    if (entryInfo) {
-                        entryInfo.callback(entry.isIntersecting);
-                    }
-                }
-            }, config);
+        if (filteredList && filteredList.length) {
+            return filteredList[0];
         }
 
-        return observer;
+        console.log('making new3', config);
+        const observer = new IntersectionObserver(toggledEntries => {
+            for (const entry of toggledEntries) {
+                const entryInfo = this.entryMap.get(entry.target);
+
+                if (entryInfo) {
+                    entryInfo.callback(entry.isIntersecting);
+                }
+            }
+        }, config);
+
+        const observerInfo = {
+            observer,
+            config,
+            count: 0
+        };
+        this.observerInfoList.push(observerInfo);
+
+        return observerInfo;
     }
 }
