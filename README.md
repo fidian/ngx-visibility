@@ -57,7 +57,7 @@ Configuration is allowed through `ngxVisibilityAnchorDirective`, `ngxVisibilityM
 
 Emit a boolean when an item becomes visible or is hidden from view.
 
-    <my-component ngxVisibility="updateVisibility($event)"></my-component>
+    <my-component (ngxVisibility)="updateVisibility($event)"></my-component>
 
 Listener is automatically added and removed by the directive.
 
@@ -137,8 +137,11 @@ Used to flag a viewport instead of using the whole window. When using this direc
 
 This attribute is used with `ngxVisibility` or `ngxVisibilityLazyLoad` in order to set the margin when observing that element. Margins are specified as per the CSS properties and must be measured in pixels or percent.
 
-    <!-- Load when it is within 100px of being seen />
+    <!-- Load when it is within 100px of being seen. -->
     <img src="cool-image.png" ngxVisibilityLazyLoad ngxVisibilityMargin="100px" />
+
+    <!-- Load if the element is within half of a screen away from being seen. -->
+    <div (ngxVisibility)="setVisibility($event)" ngxVisibilityMargin="50%" />
 
 
 ## ngxVisibilityThreshold
