@@ -7,22 +7,23 @@ import {
     OnChanges,
     OnDestroy,
     Optional,
+    SimpleChanges,
     SkipSelf
-} from '@angular/core';
+} from "@angular/core";
 
-import { NgxVisibilityAnchorDirective } from './ngx-visibility-anchor.directive';
-import { NgxVisibilityService } from './ngx-visibility.service';
+import { NgxVisibilityAnchorDirective } from "./ngx-visibility-anchor.directive";
+import { NgxVisibilityService } from "./ngx-visibility.service";
 
 @Directive({
-    selector: '[ngxVisibilityLazyLoad]'
+    selector: "[ngxVisibilityLazyLoad]"
 })
 export class NgxVisibilityLazyLoadDirective implements OnChanges {
-    @Input() backgroundImage: string;
-    @Input() src: string;
-    @Input() srcset: string;
-    @Input() ngxVisibilityMargin: string;
-    @Input() ngxVisibilityThreshold: number | number[];
-    @HostBinding('style.backgroundImage') backgroundImageStyle;
+    @Input() backgroundImage: string = "";
+    @Input() src: string = "";
+    @Input() srcset: string = "";
+    @Input() ngxVisibilityMargin: string = "0px";
+    @Input() ngxVisibilityThreshold: number | number[] = [0];
+    @HostBinding("style.backgroundImage") backgroundImageStyle = "";
     private loadImage = false;
     private observing = false;
 
@@ -39,24 +40,24 @@ export class NgxVisibilityLazyLoadDirective implements OnChanges {
         this.observe();
     }
 
-    ngOnChanges(changes) {
+    ngOnChanges(changes: SimpleChanges) {
         if (this.loadImage) {
-            if (changes.backgroundImage) {
+            if (changes["backgroundImage"]) {
                 this.backgroundImageStyle = this.backgroundImage;
             }
 
-            if (changes.src) {
+            if (changes["src"]) {
                 this.elementRef.nativeElement.src = this.src;
             }
 
-            if (changes.srcset) {
+            if (changes["srcset"]) {
                 this.elementRef.nativeElement.srcset = this.srcset;
             }
         } else if (
             this.observing &&
-            (changes.ngxVisibilityMargin ||
-                changes.ngxVisibilityThresholds ||
-                changes.ngxVisibility)
+            (changes["ngxVisibilityMargin"] ||
+                changes["ngxVisibilityThresholds"] ||
+                changes["ngxVisibility"])
         ) {
             this.unobserve();
             this.observe();
@@ -69,33 +70,39 @@ export class NgxVisibilityLazyLoadDirective implements OnChanges {
 
     private observe() {
         if (!this.observing && !this.loadImage) {
-            const config: IntersectionObserverInit = {};
+            const config: IntersectionObserverInit = {
+                rootMargin: "0px",
+                root: null,
+                threshold: [0]
+            };
 
             if (this.ngxVisibilityMargin) {
                 config.rootMargin = this.ngxVisibilityMargin;
             }
 
             if (this.ngxVisibilityThreshold) {
-                config.threshold = this.ngxVisibilityThreshold;
-
-                if (typeof config.threshold === 'string') {
-                    config.threshold = +config.threshold;
+                if (Array.isArray(this.ngxVisibilityThreshold)) {
+                    config.threshold = this.ngxVisibilityThreshold;
+                } else {
+                    config.threshold = [0];
                 }
             }
 
             if (this.ngxVisibilityAnchorDirective) {
-                config.root = this.ngxVisibilityAnchorDirective.ngxVisibilityGetElementRef().nativeElement;
+                config.root =
+                    this.ngxVisibilityAnchorDirective.ngxVisibilityGetElementRef().nativeElement;
             }
 
             this.ngxVisibilityService.observe(
                 this.elementRef.nativeElement,
-                isVisible => {
+                (isVisible) => {
                     if (isVisible) {
                         this.loadImage = true;
                         this.unobserve();
 
                         if (this.backgroundImage) {
-                            this.elementRef.nativeElement.style.backgroundImage = this.backgroundImage;
+                            this.elementRef.nativeElement.style.backgroundImage =
+                                this.backgroundImage;
                         }
 
                         if (this.src) {

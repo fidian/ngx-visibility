@@ -9,19 +9,21 @@ import {
     OnDestroy,
     Optional,
     Output,
+    SimpleChanges,
     SkipSelf
-} from '@angular/core';
+} from "@angular/core";
 
-import { NgxVisibilityService } from './ngx-visibility.service';
-import { NgxVisibilityAnchorDirective } from './ngx-visibility-anchor.directive';
+import { NgxVisibilityService } from "./ngx-visibility.service";
+import { NgxVisibilityAnchorDirective } from "./ngx-visibility-anchor.directive";
 
 @Directive({
-    selector: '[ngxVisibility]'
+    selector: "[ngxVisibility]"
 })
 export class NgxVisibilityDirective
-    implements AfterViewInit, OnChanges, OnDestroy {
-    @Input() ngxVisibilityMargin: string;
-    @Input() ngxVisibilityThreshold: number | number[];
+    implements AfterViewInit, OnChanges, OnDestroy
+{
+    @Input() ngxVisibilityMargin: string = "0";
+    @Input() ngxVisibilityThreshold: number | number[] = 0;
     @Output() ngxVisibility = new EventEmitter<boolean>();
     private observing = false;
 
@@ -38,12 +40,12 @@ export class NgxVisibilityDirective
         this.observe();
     }
 
-    ngOnChanges(changes) {
+    ngOnChanges(changes: SimpleChanges) {
         if (
             this.observing &&
-            (changes.ngxVisibilityMargin ||
-                changes.ngxVisibilityThresholds ||
-                changes.ngxVisibility)
+            (changes["ngxVisibilityMargin"] ||
+                changes["ngxVisibilityThresholds"] ||
+                changes["ngxVisibility"])
         ) {
             this.unobserve();
             this.observe();
@@ -56,23 +58,32 @@ export class NgxVisibilityDirective
 
     private observe() {
         if (!this.observing) {
-            const config: IntersectionObserverInit = {};
+            const config: IntersectionObserverInit = {
+                rootMargin: "0px",
+                root: null,
+                threshold: [0]
+            };
 
             if (this.ngxVisibilityMargin) {
                 config.rootMargin = this.ngxVisibilityMargin;
             }
 
             if (this.ngxVisibilityThreshold) {
-                config.threshold = this.ngxVisibilityThreshold;
+                if (Array.isArray(this.ngxVisibilityThreshold)) {
+                    config.threshold = this.ngxVisibilityThreshold;
+                } else {
+                    config.threshold = [this.ngxVisibilityThreshold];
+                }
             }
 
             if (this.ngxVisibilityAnchorDirective) {
-                config.root = this.ngxVisibilityAnchorDirective.ngxVisibilityGetElementRef().nativeElement;
+                config.root =
+                    this.ngxVisibilityAnchorDirective.ngxVisibilityGetElementRef().nativeElement;
             }
 
             this.ngxVisibilityService.observe(
                 this.elementRef.nativeElement,
-                isVisible => {
+                (isVisible) => {
                     this.ngxVisibility.emit(isVisible);
                 },
                 config

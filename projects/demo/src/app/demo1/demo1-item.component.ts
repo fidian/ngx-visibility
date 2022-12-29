@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: './demo1-item.component.html'
 })
 export class Demo1ItemComponent {
-    @Input() item = '';
+    @Input() item = 0;
     @Input() margin = '';
     visible = false;
 

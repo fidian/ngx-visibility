@@ -5,7 +5,7 @@ import { Component, HostBinding, Input, OnChanges } from '@angular/core';
     templateUrl: './demo1.component.html'
 })
 export class Demo1Component {
-    items = [];
+    items: number[] = [];
     availableCounts = [ 64, 128, 256, 512, 1024, 2048, 4096, 8192 ];
     count = this.availableCounts[2];
     margin = '-100px';
@@ -14,7 +14,7 @@ export class Demo1Component {
         this.setItems(64);
     }
 
-    setItems(count) {
+    setItems(count: number) {
         const items = [];
 
         while (items.length < count) {

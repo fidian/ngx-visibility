@@ -28,12 +28,13 @@ export class NgxVisibilityService implements OnDestroy {
     observe(
         element: Element,
         callback: EntryCallback,
-        config: IntersectionObserverInit = {}
+        config: Partial<IntersectionObserverInit> = {}
     ) {
-        const configCopy = {
+        const threshold = config.threshold || [0];
+        const configCopy: IntersectionObserverInit = {
             root: config.root || null,
             rootMargin: config.rootMargin || '0px',
-            threshold: [].concat(config.threshold || 0)
+            threshold
         };
         const observerInfo = this.getObserver(configCopy);
         this.entryMap.set(element, {
@@ -61,12 +62,12 @@ export class NgxVisibilityService implements OnDestroy {
     }
 
     private getObserver(config: IntersectionObserverInit) {
-        const configThresholdString = [].concat(config.threshold).join(' ');
+        const configThresholdString = config.threshold.join(' ');
         const filteredList = this.observerInfoList.filter(
             oi =>
                 oi.config.root === config.root &&
                 oi.config.rootMargin === config.rootMargin &&
-                [].concat(oi.config.threshold).join(' ') ===
+                oi.config.threshold.join(' ') ===
                     configThresholdString
         );
 
