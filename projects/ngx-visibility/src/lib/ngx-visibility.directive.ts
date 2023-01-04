@@ -22,7 +22,7 @@ import { NgxVisibilityAnchorDirective } from "./ngx-visibility-anchor.directive"
 export class NgxVisibilityDirective
     implements AfterViewInit, OnChanges, OnDestroy
 {
-    @Input() ngxVisibilityMargin: string = "0";
+    @Input() ngxVisibilityMargin: string = "0px";
     @Input() ngxVisibilityThreshold: number | number[] = 0;
     @Output() ngxVisibility = new EventEmitter<boolean>();
     private observing = false;
