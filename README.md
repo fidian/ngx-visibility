@@ -112,9 +112,9 @@ This service maintains the list of observers and calls callbacks when items beco
                     // the typical CSS margin formats.
                     rootMargin: '40px',
 
-                    // Thresholds. Default is 0. Can be an array of
-                    // thresholds. Values are from 0 (not visible) to
-                    // 1 (completely visible).
+                    // Thresholds. Default is [ 0 ]. Can be either a number or
+                    // an array of thresholds. Values are from 0 (not visible)
+                    // to 1 (completely visible).
                     threshold: [ 0, .33, .66 ]
                 }
             );

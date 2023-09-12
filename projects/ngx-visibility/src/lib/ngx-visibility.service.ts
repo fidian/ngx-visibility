@@ -30,16 +30,15 @@ export class NgxVisibilityService implements OnDestroy {
         callback: EntryCallback,
         config: Partial<IntersectionObserverInit> = {}
     ) {
-        const threshold = config.threshold || [0];
         const configCopy: IntersectionObserverInit = {
             root: config.root || null,
             rootMargin: config.rootMargin || '0px',
-            threshold
+            threshold: this.threshold(config.threshold),
         };
         const observerInfo = this.getObserver(configCopy);
         this.entryMap.set(element, {
             callback,
-            observerInfo
+            observerInfo,
         });
         observerInfo.observer.observe(element);
         observerInfo.count += 1;
@@ -62,12 +61,14 @@ export class NgxVisibilityService implements OnDestroy {
     }
 
     private getObserver(config: IntersectionObserverInit) {
-        const configThresholdString = config.threshold.join(' ');
+        const configThresholdString = this.threshold(config.threshold).join(
+            ' '
+        );
         const filteredList = this.observerInfoList.filter(
             oi =>
                 oi.config.root === config.root &&
                 oi.config.rootMargin === config.rootMargin &&
-                oi.config.threshold.join(' ') ===
+                this.threshold(oi.config.threshold).join(' ') ===
                     configThresholdString
         );
 
@@ -88,10 +89,22 @@ export class NgxVisibilityService implements OnDestroy {
         const observerInfo = {
             observer,
             config,
-            count: 0
+            count: 0,
         };
         this.observerInfoList.push(observerInfo);
 
         return observerInfo;
+    }
+
+    private threshold(configValue: IntersectionObserverInit['threshold']) {
+        if (!configValue) {
+            return [0];
+        }
+
+        if (!Array.isArray(configValue)) {
+            return [configValue];
+        }
+
+        return configValue;
     }
 }
