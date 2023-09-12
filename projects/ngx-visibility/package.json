@@ -1,9 +1,9 @@
 {
   "name": "ngx-visibility",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0"
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0"
   }
 }
