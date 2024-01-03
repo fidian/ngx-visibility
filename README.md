@@ -1,6 +1,6 @@
 # NgxVisibility
 
-Angular 15.x library to monitor when elements are visible in the DOM. When you have a huge list of components, this is more performant than other libraries because it keeps the number of observers to a minimum. It uses IntersectionObserver to do the work.
+Angular 17.x library to monitor when elements are visible in the DOM. When you have a huge list of components, this is more performant than other libraries because it keeps the number of observers to a minimum. It uses IntersectionObserver to do the work.
 
 If you only care about when elements are resized, including resize events due to browser window size changing, look at [ngx-resize-observer](https://github.com/fidian/ngx-resize-observer/).
 
