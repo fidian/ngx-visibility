@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import { MarginComponent } from '../margin.component';
+import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 
 interface DemoItem {
     value: number;
@@ -7,11 +10,12 @@ interface DemoItem {
 
 @Component({
     selector: 'demo2',
-    templateUrl: './demo2.component.html'
+    templateUrl: './demo2.component.html',
+    imports: [CommonModule, MarginComponent, NgxVisibilityModule],
 })
 export class Demo2Component {
     items: DemoItem[] = [];
-    availableCounts = [ 64, 128, 256, 512, 1024, 2048, 4096, 8192 ];
+    availableCounts = [64, 128, 256, 512, 1024, 2048, 4096, 8192];
     count = this.availableCounts[2];
     margin = '-100px';
 
@@ -25,7 +29,7 @@ export class Demo2Component {
         while (items.length < count) {
             items.push({
                 value: Math.random(),
-                visible: false
+                visible: false,
             });
         }
 

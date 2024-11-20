@@ -1,8 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'margin',
-    templateUrl: './margin.component.html'
+    templateUrl: './margin.component.html',
+    imports: [FormsModule],
 })
 export class MarginComponent implements OnChanges {
     @Input() value = '';

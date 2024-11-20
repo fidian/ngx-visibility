@@ -1,8 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MarginComponent } from '../margin.component';
+import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 
 @Component({
     selector: 'demo3',
-    templateUrl: './demo3.component.html'
+    templateUrl: './demo3.component.html',
+    imports: [CommonModule, FormsModule, MarginComponent, NgxVisibilityModule],
 })
 export class Demo3Component {
     images = [
@@ -24,7 +29,7 @@ export class Demo3Component {
         'protractor.png',
         'pwa.png',
         'router.png',
-        'universal.png'
+        'universal.png',
     ];
     margin = '';
     threshold = 0.9;
