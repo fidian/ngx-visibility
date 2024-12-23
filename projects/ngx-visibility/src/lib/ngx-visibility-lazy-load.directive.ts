@@ -1,4 +1,5 @@
 import {
+    afterNextRender,
     Directive,
     ElementRef,
     Host,
@@ -34,10 +35,10 @@ export class NgxVisibilityLazyLoadDirective implements OnChanges {
         @Optional()
         @SkipSelf()
         private readonly ngxVisibilityAnchorDirective?: NgxVisibilityAnchorDirective
-    ) {}
-
-    ngAfterViewInit() {
-        this.observe();
+    ) {
+        afterNextRender(() => {
+            this.observe();
+        });
     }
 
     ngOnChanges(changes: SimpleChanges) {

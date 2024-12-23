@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 
 type EntryCallback = (isVisible: boolean) => void;
 
@@ -17,6 +17,8 @@ interface ObserverInfo {
 export class NgxVisibilityService implements OnDestroy {
     private entryMap = new Map<Element, EntryInfo>();
     private observerInfoList: ObserverInfo[] = [];
+
+    constructor(private readonly ngZone: NgZone) {}
 
     ngOnDestroy() {
         this.entryMap.forEach((entryInfo, element) => {
@@ -77,13 +79,15 @@ export class NgxVisibilityService implements OnDestroy {
         }
 
         const observer = new IntersectionObserver(toggledEntries => {
-            for (const entry of toggledEntries) {
-                const entryInfo = this.entryMap.get(entry.target);
+            this.ngZone.run(() => {
+                for (const entry of toggledEntries) {
+                    const entryInfo = this.entryMap.get(entry.target);
 
-                if (entryInfo) {
-                    entryInfo.callback(entry.isIntersecting);
+                    if (entryInfo) {
+                        entryInfo.callback(entry.isIntersecting);
+                    }
                 }
-            }
+            });
         }, config);
 
         const observerInfo = {

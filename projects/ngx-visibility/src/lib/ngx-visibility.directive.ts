@@ -1,5 +1,5 @@
 import {
-    AfterViewInit,
+    afterNextRender,
     Directive,
     ElementRef,
     EventEmitter,
@@ -20,7 +20,7 @@ import { NgxVisibilityAnchorDirective } from "./ngx-visibility-anchor.directive"
     selector: "[ngxVisibility]"
 })
 export class NgxVisibilityDirective
-    implements AfterViewInit, OnChanges, OnDestroy
+    implements OnChanges, OnDestroy
 {
     @Input() ngxVisibilityMargin: string = "0px";
     @Input() ngxVisibilityThreshold: number | number[] = 0;
@@ -34,10 +34,10 @@ export class NgxVisibilityDirective
         @Optional()
         @SkipSelf()
         private readonly ngxVisibilityAnchorDirective?: NgxVisibilityAnchorDirective
-    ) {}
-
-    ngAfterViewInit() {
-        this.observe();
+    ) {
+        afterNextRender(() => {
+            this.observe();
+        });
     }
 
     ngOnChanges(changes: SimpleChanges) {
