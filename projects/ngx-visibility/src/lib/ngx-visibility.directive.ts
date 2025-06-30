@@ -25,6 +25,8 @@ export class NgxVisibilityDirective
     @Input() ngxVisibilityMargin: string = "0px";
     @Input() ngxVisibilityThreshold: number | number[] = 0;
     @Output() ngxVisibility = new EventEmitter<boolean>();
+    @Output() ngxVisibilityHidden = new EventEmitter<boolean>();
+    @Output() ngxVisibilityVisible = new EventEmitter<boolean>();
     private observing = false;
 
     constructor(
@@ -85,6 +87,12 @@ export class NgxVisibilityDirective
                 this.elementRef.nativeElement,
                 (isVisible) => {
                     this.ngxVisibility.emit(isVisible);
+
+                    if (isVisible) {
+                        this.ngxVisibilityVisible.emit(isVisible);
+                    } else {
+                        this.ngxVisibilityHidden.emit(isVisible);
+                    }
                 },
                 config
             );

@@ -4,8 +4,10 @@ import { MarginComponent } from '../margin.component';
 import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 
 interface DemoItem {
+    hiddenCount: number;
     value: number;
     visible: boolean;
+    visibleCount: number;
 }
 
 @Component({
@@ -23,13 +25,20 @@ export class Demo2Component {
         this.setItems(64);
     }
 
+    hidden(item: DemoItem) {
+        item.visible = false;
+        item.hiddenCount += 1;
+    }
+
     setItems(count: number) {
         const items = [];
 
         while (items.length < count) {
             items.push({
+                hiddenCount: 0,
                 value: Math.random(),
                 visible: false,
+                visibleCount: 0,
             });
         }
 
@@ -37,7 +46,8 @@ export class Demo2Component {
         this.items = items;
     }
 
-    setVisibility(item: DemoItem, e: boolean) {
-        item.visible = e;
+    visible(item: DemoItem) {
+        item.visible = true;
+        item.visibleCount += 1;
     }
 }

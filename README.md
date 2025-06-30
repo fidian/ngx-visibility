@@ -65,6 +65,14 @@ Emit a boolean when an item becomes visible or is hidden from view.
 
 Listener is automatically added and removed by the directive.
 
+You can also listen to specific events.
+
+    <my-component
+        ngxVisibility
+        (ngxVisibilityHidden)="notVisible()"
+        (ngxVisibilityVisible)="showing()"
+    ></my-component>
+
 Configuration is allowed through `ngxVisibilityAnchorDirective`, `ngxVisibilityMargin` and `ngxVisibilityThreshold`, which are discussed below.
 
 

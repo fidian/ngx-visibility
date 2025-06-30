@@ -18,18 +18,19 @@
         ngxVisibilityAnchor is honored because that directive is used within the
         same component as ngxVisibility.
     </p>
-    <p>
-        Red rows are considered "not visible" due to the negative margin.
-    </p>
+    <p>Red rows are considered "not visible" due to the negative margin.</p>
 </div>
 
 <div class="Fxg(1) Fxs(1) Ov(a)" ngxVisibilityAnchor>
     <div
         *ngFor="let item of items"
-        (ngxVisibility)="setVisibility(item, $event)"
+        ngxVisibility
+        (ngxVisibilityHidden)="hidden(item)"
+        (ngxVisibilityVisible)="visible(item)"
         [ngxVisibilityMargin]="margin"
         [ngClass]="{ 'Bgc(red)': !item.visible }"
     >
-        {{ item.value }} {{ item.visible }}
+        {{ item.value }} {{ item.visible }} visibleCount:{{ item.visibleCount}}
+        hiddenCount:{{ item.hiddenCount }}
     </div>
 </div>
