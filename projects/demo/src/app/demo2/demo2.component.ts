@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import {
+    Component,
+    HostBinding,
+    Input,
+    OnChanges,
+    signal,
+} from '@angular/core';
 import { MarginComponent } from '../margin.component';
 import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 
@@ -16,10 +22,10 @@ interface DemoItem {
     imports: [CommonModule, MarginComponent, NgxVisibilityModule],
 })
 export class Demo2Component {
-    items: DemoItem[] = [];
+    items = signal<DemoItem[]>([]);
     availableCounts = [64, 128, 256, 512, 1024, 2048, 4096, 8192];
-    count = this.availableCounts[2];
-    margin = '-100px';
+    count = signal(0);
+    margin = signal('-100px');
 
     constructor() {
         this.setItems(64);
@@ -42,8 +48,8 @@ export class Demo2Component {
             });
         }
 
-        this.count = count;
-        this.items = items;
+        this.count.set(count);
+        this.items.set(items);
     }
 
     visible(item: DemoItem) {

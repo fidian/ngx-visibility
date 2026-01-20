@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import {
+    Component,
+    HostBinding,
+    Input,
+    OnChanges,
+    signal,
+} from '@angular/core';
 import { Demo1ItemComponent } from './demo1-item.component';
 import { MarginComponent } from '../margin.component';
 import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
@@ -7,16 +13,21 @@ import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 @Component({
     selector: 'demo1',
     templateUrl: './demo1.component.html',
-    imports: [CommonModule, Demo1ItemComponent, MarginComponent, NgxVisibilityModule],
+    imports: [
+        CommonModule,
+        Demo1ItemComponent,
+        MarginComponent,
+        NgxVisibilityModule,
+    ],
 })
 export class Demo1Component {
-    items: number[] = [];
+    items = signal<number[]>([]);
     availableCounts = [64, 128, 256, 512, 1024, 2048, 4096, 8192];
-    count = this.availableCounts[2];
-    margin = '-100px';
+    count = signal(0);
+    margin = signal('-100px');
 
     constructor() {
-        this.setItems(64);
+        this.setItems(128);
     }
 
     setItems(count: number) {
@@ -28,7 +39,7 @@ export class Demo1Component {
 
         items.sort();
 
-        this.count = count;
-        this.items = items;
+        this.count.set(count);
+        this.items.set(items);
     }
 }

@@ -1,3 +1,7 @@
-<div (ngxVisibility)="setVisibility($event)" [ngxVisibilityMargin]="margin" [ngClass]="{'Bgc(red)': !visible}">
-    {{item}} {{visible}}
+<div
+    (ngxVisibility)="setVisibility($event)"
+    [ngxVisibilityMargin]="margin"
+    [ngClass]="{ 'Bgc(red)': !visible() }"
+>
+    {{ item }} {{ visible() }}
 </div>

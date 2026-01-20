@@ -4,12 +4,14 @@
         <a
             *ngFor="let thisCount of availableCounts"
             class="Td(u) Bdc(black) Bdw(1px) Bds(s) P(3px)"
-            [ngClass]="{ 'Fw(b) C(white) Bgc(darkblue)': count === thisCount }"
+            [ngClass]="{
+                'Fw(b) C(white) Bgc(darkblue)': count() === thisCount,
+            }"
             (click)="setItems(thisCount)"
             >{{ thisCount }}</a
         >
     </div>
-    <margin [(value)]="margin"></margin>
+    <margin [value]="margin()" (valueChange)="margin.set($event)"></margin>
 </div>
 
 <div>
@@ -23,14 +25,16 @@
 
 <div class="Fxg(1) Fxs(1) Ov(a)" ngxVisibilityAnchor>
     <div
-        *ngFor="let item of items"
+        *ngFor="let item of items()"
         ngxVisibility
         (ngxVisibilityHidden)="hidden(item)"
         (ngxVisibilityVisible)="visible(item)"
-        [ngxVisibilityMargin]="margin"
+        [ngxVisibilityMargin]="margin()"
         [ngClass]="{ 'Bgc(red)': !item.visible }"
     >
-        {{ item.value }} {{ item.visible }} visibleCount:{{ item.visibleCount}}
+        {{ item.value }} {{ item.visible }} visibleCount:{{
+            item.visibleCount
+        }}
         hiddenCount:{{ item.hiddenCount }}
     </div>
 </div>

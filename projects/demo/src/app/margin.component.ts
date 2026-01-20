@@ -4,6 +4,7 @@ import {
     Input,
     OnChanges,
     Output,
+    signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -15,19 +16,29 @@ import { FormsModule } from '@angular/forms';
 export class MarginComponent implements OnChanges {
     @Input() value = '';
     @Output() valueChange = new EventEmitter<string>();
-    num = 0;
-    unit = 'px';
+    num = signal(0);
+    unit = signal('px');
 
     ngOnChanges() {
         const matches = this.value.match(/(-?[0-9]+)(px|%)?/);
 
         if (matches) {
-            this.num = +matches[1];
-            this.unit = matches[2] || 'px';
+            this.num.set(+matches[1]);
+            this.unit.set(matches[2] || 'px');
         }
     }
 
-    update() {
+    updateNum(num: number) {
+        this.num.set(num);
+        this.update();
+    }
+
+    updateUnit(unit: string) {
+        this.unit.set(unit);
+        this.update();
+    }
+
+    private update() {
         this.valueChange.emit('' + this.num + this.unit);
     }
 }

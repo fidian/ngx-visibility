@@ -1,6 +1,13 @@
 <div class="D(f) Fxd(c)">
-    <margin [(value)]="margin"></margin>
-    <div>Threshold (from 0 to 1): <input type="text" [(ngModel)]="threshold" /></div>
+    <margin [value]="margin()" (valueChange)="margin.set($event)"></margin>
+    <div>
+        Threshold (from 0 to 1):
+        <input
+            type="text"
+            [ngModel]="threshold()"
+            (ngModelChange)="threshold.set($event)"
+        />
+    </div>
 </div>
 
 <div>
@@ -16,8 +23,8 @@
             <img
                 src="/assets/{{ image }}"
                 ngxVisibilityLazyLoad
-                [ngxVisibilityThreshold]="threshold"
-                [ngxVisibilityMargin]="margin"
+                [ngxVisibilityThreshold]="threshold()"
+                [ngxVisibilityMargin]="margin()"
                 height="250"
                 width="250"
             />
@@ -27,8 +34,8 @@
             <img
                 srcset="/assets/{{ image }} 1x"
                 ngxVisibilityLazyLoad
-                [ngxVisibilityThreshold]="threshold"
-                [ngxVisibilityMargin]="margin"
+                [ngxVisibilityThreshold]="threshold()"
+                [ngxVisibilityMargin]="margin()"
                 height="250"
                 width="250"
             />
@@ -38,8 +45,8 @@
             <div
                 backgroundImage="url('/assets/{{ image }}')"
                 ngxVisibilityLazyLoad
-                [ngxVisibilityThreshold]="threshold"
-                [ngxVisibilityMargin]="margin"
+                [ngxVisibilityThreshold]="threshold()"
+                [ngxVisibilityMargin]="margin()"
                 class="H(250px) W(250px) Bgz(ct) Bgr(nr)"
             ></div>
             <div>Div with "backgroundImage"</div>

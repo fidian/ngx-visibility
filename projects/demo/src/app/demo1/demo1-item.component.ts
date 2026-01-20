@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 
 @Component({
@@ -10,9 +10,9 @@ import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
 export class Demo1ItemComponent {
     @Input() item = 0;
     @Input() margin = '';
-    visible = false;
+    visible = signal(false);
 
     setVisibility(e: boolean) {
-        this.visible = e;
+        this.visible.set(e);
     }
 }

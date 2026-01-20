@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import {
+    Component,
+    HostBinding,
+    Input,
+    OnChanges,
+    signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MarginComponent } from '../margin.component';
 import { NgxVisibilityModule } from '../../../../ngx-visibility/src/public-api';
@@ -31,6 +37,6 @@ export class Demo3Component {
         'router.png',
         'universal.png',
     ];
-    margin = '';
-    threshold = 0.9;
+    margin = signal('');
+    threshold = signal(0.9);
 }
